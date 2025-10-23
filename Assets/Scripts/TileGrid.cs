@@ -42,6 +42,34 @@ public class TileGrid : MonoBehaviour
     }
 
     /// <summary>
+    /// Возвращает слот для плитки, имеющий соответствующие координаты (x,y).
+    /// </summary>
+    public TileCell GetCell(int x, int y)
+    {
+        if (x >= 0 && x < width && y >= 0 && y < height)
+            return rows[y].cells[x];
+        else
+            return null;
+    }
+
+    public TileCell GetCell(Vector2Int coordinates)
+    {
+        return GetCell(coordinates.x, coordinates.y);
+    }
+
+    /// <summary>
+    /// Возвращает соседний по направлению Direction слот к текущему слоту Cell.
+    /// </summary>
+    public TileCell GetAdjacentCell(TileCell cell, Vector2Int direction)
+    {
+        Vector2Int coordinates = cell.coordinates;
+        coordinates.x += direction.x;
+        coordinates.y -= direction.y;   // "-" потому что ось Y у нас смотрит вниз.
+
+        return GetCell(coordinates);
+    }
+
+    /// <summary>
     /// Возвращает рандомный не занятый слот.
     /// </summary>
     public TileCell GetRandomEmptyCell()

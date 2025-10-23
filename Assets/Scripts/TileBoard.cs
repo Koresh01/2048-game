@@ -41,4 +41,73 @@ public class TileBoard : MonoBehaviour
 
         tiles.Add(tile);
     }
+
+    private void Update()
+    {
+        // Чтобы определить направления осей X и Y зайди в TileGrid и в Start() ты задаёшь координаты.
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            MoveTiles(Vector2Int.up, 0, 1, 1, 1);   // Хотим сместить плитки вверх, значит должны проитерироваться по всем плиткам, кроме самого верхней row.
+        } else if (Input.GetKeyDown(KeyCode.S))
+        {
+            MoveTiles(Vector2Int.down, 0, 1, grid.height-2, -1);
+        } else if (Input.GetKeyDown(KeyCode.D))
+        {
+            MoveTiles(Vector2Int.right, grid.width-2, -1, 0, 1);
+        } else if (Input.GetKeyDown(KeyCode.A))
+        {
+            MoveTiles(Vector2Int.left, 1, 1, 0, 1);
+        }
+    }
+
+    /// <summary>
+    /// Перемещение плитки в заданном направлении.
+    /// </summary>
+    /// <param name="direction">Направление перемещения плитки.</param>
+    /// <param name="startX">Стартовая позиция по X (необходима для определения направления смещения)</param>
+    /// <param name="incX">Шаг смещения по X (необходима для определения направления смещения)</param>
+    /// <param name="startY">Стартовая позиция по Y (необходима для определения направления смещения)</param>
+    /// <param name="incY">Шаг смещения по Y (необходима для определения направления смещения)</param>
+    private void MoveTiles(Vector2Int direction, int startX, int incX, int startY, int incY)
+    {
+        for (int x = startX; x >= 0 && x < grid.width; x += incX)
+        {
+            for (int y = startY; y >= 0 && y < grid.height; y += incY)
+            {
+                TileCell cell = grid.GetCell(x, y);
+
+                if (cell.occupied)
+                {
+                    MoveTile(cell.tile, direction);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Перемещает плитку в заданном направлении.
+    /// </summary>
+    private void MoveTile(Tile tile, Vector2Int direction)
+    {
+        TileCell newCell = null;
+        TileCell adjacent = grid.GetAdjacentCell(tile.cell, direction);
+
+        // Пока найдётся слот(посадочная площадка для плитки) в направлении direction:
+        while (adjacent != null)
+        {
+            if (adjacent.occupied)
+            {
+                // TODO: merging
+                break;
+            }
+            
+            newCell = adjacent;
+            adjacent = grid.GetAdjacentCell(adjacent, direction);
+        }
+
+        if (newCell != null)
+        {
+            tile.MoveTo(newCell);
+        }
+    }
 }

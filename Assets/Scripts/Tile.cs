@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// Префаб квадратика с цифрой.
+/// Префаб квадратика с цифрой. "Плитка"
 /// </summary>
 public class Tile : MonoBehaviour
 {
@@ -53,7 +53,25 @@ public class Tile : MonoBehaviour
     /// <param name="cell">Слот, в позиции которого, создаём плитку.</param>
     public void Spawn(TileCell cell)
     {
-        // Если этот слот итак занят плиткой.
+        // Если этот слот - существует.
+        if (this.cell != null)
+        {
+            this.cell.tile = null;  // Отвязываем старую плитку, потому что сейчас тут будет новая.
+        }
+
+        this.cell = cell;
+        this.cell.tile = this;
+
+        transform.position = cell.transform.position;
+    }
+
+    /// <summary>
+    /// Перемещает плитку в слот.
+    /// </summary>
+    /// <param name="cell">Слот в который хотим переместиться.</param>
+    public void MoveTo(TileCell cell)
+    {
+        // Если слот в который хотим переместиться - существует.
         if (this.cell != null)
         {
             this.cell.tile = null;  // Отвязываем старую плитку, потому что сейчас тут будет новая.
