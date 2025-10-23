@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class TileBoard : MonoBehaviour
@@ -19,6 +20,11 @@ public class TileBoard : MonoBehaviour
     /// Список всех плиток, которые сейчас в игре.
     /// </summary>
     private List<Tile> tiles;
+
+    /// <summary>
+    /// Параметр true - пока запущена анимация перемещения плиток.
+    /// </summary>
+    private bool waiting;
 
 
     private void Awake()
@@ -44,19 +50,26 @@ public class TileBoard : MonoBehaviour
 
     private void Update()
     {
-        // Чтобы определить направления осей X и Y зайди в TileGrid и в Start() ты задаёшь координаты.
-        if (Input.GetKeyDown(KeyCode.W))
+        // Если не ждём анимацию перемещения плиток:
+        if (!waiting)
         {
-            MoveTiles(Vector2Int.up, 0, 1, 1, 1);   // Хотим сместить плитки вверх, значит должны проитерироваться по всем плиткам, кроме самого верхней row.
-        } else if (Input.GetKeyDown(KeyCode.S))
-        {
-            MoveTiles(Vector2Int.down, 0, 1, grid.height-2, -1);
-        } else if (Input.GetKeyDown(KeyCode.D))
-        {
-            MoveTiles(Vector2Int.right, grid.width-2, -1, 0, 1);
-        } else if (Input.GetKeyDown(KeyCode.A))
-        {
-            MoveTiles(Vector2Int.left, 1, 1, 0, 1);
+            // Чтобы определить направления осей X и Y зайди в TileGrid и в Start() ты задаёшь координаты.
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                MoveTiles(Vector2Int.up, 0, 1, 1, 1);   // Хотим сместить плитки вверх, значит должны проитерироваться по всем плиткам, кроме самого верхней row.
+            }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                MoveTiles(Vector2Int.down, 0, 1, grid.height - 2, -1);
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                MoveTiles(Vector2Int.right, grid.width - 2, -1, 0, 1);
+            }
+            else if (Input.GetKeyDown(KeyCode.A))
+            {
+                MoveTiles(Vector2Int.left, 1, 1, 0, 1);
+            }
         }
     }
 
@@ -70,6 +83,8 @@ public class TileBoard : MonoBehaviour
     /// <param name="incY">Шаг смещения по Y (необходима для определения направления смещения)</param>
     private void MoveTiles(Vector2Int direction, int startX, int incX, int startY, int incY)
     {
+        bool changed = false;
+
         for (int x = startX; x >= 0 && x < grid.width; x += incX)
         {
             for (int y = startY; y >= 0 && y < grid.height; y += incY)
@@ -78,16 +93,25 @@ public class TileBoard : MonoBehaviour
 
                 if (cell.occupied)
                 {
-                    MoveTile(cell.tile, direction);
+                    changed |= MoveTile(cell.tile, direction);
                 }
             }
+        }
+
+        // Если какие то плитки сейчас сдивгаются в корутине, то блокируем ввод от пользователя на 0.1 секунды:
+        if (changed)
+        {
+            StartCoroutine(WaitForChanges());
         }
     }
 
     /// <summary>
     /// Перемещает плитку в заданном направлении.
     /// </summary>
-    private void MoveTile(Tile tile, Vector2Int direction)
+    /// <returns>
+    /// True - если была запущена корутина по перемещению плитки.
+    /// </returns>
+    private bool MoveTile(Tile tile, Vector2Int direction)
     {
         TileCell newCell = null;
         TileCell adjacent = grid.GetAdjacentCell(tile.cell, direction);
@@ -108,6 +132,24 @@ public class TileBoard : MonoBehaviour
         if (newCell != null)
         {
             tile.MoveTo(newCell);
+            return true;
         }
+
+        return false;
     }
+
+
+    /// <summary>
+    /// Блокирует ввод от пользователя на 0.1 секунды.
+    /// </summary>
+    private IEnumerator WaitForChanges()
+    {
+        waiting = true;
+        yield return new WaitForSeconds(0.1f);
+        waiting = false;
+
+        // TODO: create new tile
+        // TODO: check for game over
+    }
+
 }
