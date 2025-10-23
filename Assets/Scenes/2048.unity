@@ -1134,6 +1134,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 04436497dbaa07448bdd160271552598, type: 2}
   - {fileID: 11400000, guid: 368fe870976326945b433a05c62afdec, type: 2}
   - {fileID: 11400000, guid: 2e5c9ba44ee82b04b8c79bdb050c263a, type: 2}
+  waiting: 0
 --- !u!1 &666965579
 GameObject:
   m_ObjectHideFlags: 0
@@ -1419,6 +1420,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 770858818}
+  - component: {fileID: 770858819}
+  - component: {fileID: 770858820}
   m_Layer: 0
   m_Name: User Input Controller (Android + PC)
   m_TagString: Untagged
@@ -1441,6 +1444,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &770858819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770858817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02957be86abd41c4ba589cbe6145b2f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileBoard: {fileID: 529974287}
+  grid: {fileID: 1368437921}
+--- !u!114 &770858820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770858817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8b98d49d6c64943998775e99d6830d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileBoard: {fileID: 529974287}
+  grid: {fileID: 1368437921}
 --- !u!1 &883593202
 GameObject:
   m_ObjectHideFlags: 0

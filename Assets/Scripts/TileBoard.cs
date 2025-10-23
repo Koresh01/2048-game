@@ -26,7 +26,7 @@ public class TileBoard : MonoBehaviour
     /// <summary>
     /// Параметр true - пока запущена анимация перемещения плиток.
     /// </summary>
-    private bool waiting;
+    public bool waiting;
 
 
     private void Awake()
@@ -66,31 +66,6 @@ public class TileBoard : MonoBehaviour
         tiles.Add(tile);
     }
 
-    private void Update()
-    {
-        // Если не ждём анимацию перемещения плиток:
-        if (!waiting)
-        {
-            // Чтобы определить направления осей X и Y зайди в TileGrid и в Start() ты задаёшь координаты.
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                MoveTiles(Vector2Int.up, 0, 1, 1, 1);   // Хотим сместить плитки вверх, значит должны проитерироваться по всем плиткам, кроме самого верхней row.
-            }
-            else if (Input.GetKeyDown(KeyCode.S))
-            {
-                MoveTiles(Vector2Int.down, 0, 1, grid.height - 2, -1);
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                MoveTiles(Vector2Int.right, grid.width - 2, -1, 0, 1);
-            }
-            else if (Input.GetKeyDown(KeyCode.A))
-            {
-                MoveTiles(Vector2Int.left, 1, 1, 0, 1);
-            }
-        }
-    }
-
     /// <summary>
     /// Перемещение плитки в заданном направлении.
     /// </summary>
@@ -99,7 +74,7 @@ public class TileBoard : MonoBehaviour
     /// <param name="incX">Шаг смещения по X (необходима для определения направления смещения)</param>
     /// <param name="startY">Стартовая позиция по Y (необходима для определения направления смещения)</param>
     /// <param name="incY">Шаг смещения по Y (необходима для определения направления смещения)</param>
-    private void MoveTiles(Vector2Int direction, int startX, int incX, int startY, int incY)
+    public void MoveTiles(Vector2Int direction, int startX, int incX, int startY, int incY)
     {
         bool changed = false;
 
