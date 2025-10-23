@@ -23,6 +23,11 @@ public class Tile : MonoBehaviour
     /// </summary>
     public int number { get; private set; }
 
+    /// <summary>
+    /// Защита от многократного одновременного слияния.
+    /// </summary>
+    public bool locked { get; set; }
+
     private Image background;
     private TextMeshProUGUI text;
 
@@ -81,13 +86,33 @@ public class Tile : MonoBehaviour
         this.cell = cell;
         this.cell.tile = this;
 
-        StartCoroutine(Animate(cell.transform.position));
+        StartCoroutine(Animate(cell.transform.position, false));
+    }
+
+    /// <summary>
+    /// Слияние текущей плитки.
+    /// </summary>
+    /// <param name="cell">Слот в который будем вливаться.</param>
+    public void Merge(TileCell cell)
+    {
+        // Если слот в который хотим переместиться - существует.
+        if (this.cell != null)
+        {
+            this.cell.tile = null;  // Отвязываем старую плитку, потому что сейчас тут будет новая.
+        }
+
+        this.cell = null;
+        cell.tile.locked = true;
+
+        StartCoroutine(Animate(cell.transform.position, true));
+
     }
 
     /// <summary>
     /// Перемещает плитку в указанную позицию.
     /// </summary>
-    private IEnumerator Animate(Vector3 to)
+    /// <param name="merging">Если True, то в конце текущая плитка самоуничтожается.</param>
+    private IEnumerator Animate(Vector3 to, bool merging)
     {
         float elapsed = 0f;
         float duration = 0.1f;
@@ -102,5 +127,10 @@ public class Tile : MonoBehaviour
         }
 
         transform.position = to;
+
+        if (merging)
+        {
+            Destroy(gameObject);
+        }
     }
 }

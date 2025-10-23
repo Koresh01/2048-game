@@ -121,7 +121,12 @@ public class TileBoard : MonoBehaviour
         {
             if (adjacent.occupied)
             {
-                // TODO: merging
+                // Слияние плиток:
+                if (CanMerge(tile, adjacent.tile))
+                {
+                    Merge(tile, adjacent.tile);
+                    return true;
+                }
                 break;
             }
             
@@ -138,6 +143,44 @@ public class TileBoard : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Проверяет можно ли соединить 2 плитки.
+    /// </summary>
+    private bool CanMerge(Tile a, Tile b)
+    {
+        return a.number == b.number && !b.locked;
+    }
+
+    /// <summary>
+    /// Слияние плиток.
+    /// </summary>
+    private void Merge(Tile a, Tile b)
+    {
+        tiles.Remove(a);
+        a.Merge(b.cell);    // по сути это анимация где плитка "a" едет в слот "b", после чего "a" - самоуничтожается.
+
+        int index = Mathf.Clamp(IndexOf(b.state) + 1, 0, tileStates.Length-1);
+        int number = b.number * 2;
+
+        b.SetState(tileStates[index], number);
+    }
+
+    /// <summary>
+    /// Метод для получения индекса состояния плитки.
+    /// </summary>
+    /// <param name="state">Текущее состояние плитки.</param>
+    /// <returns>Индекс этого состояния.</returns>
+    private int IndexOf(TileState state)
+    {
+        for (int i = 0; i < tileStates.Length; i++)
+        {
+            if (state == tileStates[i]) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 
     /// <summary>
     /// Блокирует ввод от пользователя на 0.1 секунды.
@@ -148,7 +191,18 @@ public class TileBoard : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         waiting = false;
 
-        // TODO: create new tile
+
+        // Снова разрешаем одноразовое слияние каждой плитке.
+        foreach (var tile in tiles)
+        {
+            tile.locked = false;
+        }
+
+        // Каждое перемещение вызывает создание новых плиток в игре 2048:
+        if (tiles.Count != grid.size)
+        {
+            CreateTile();
+        }
         // TODO: check for game over
     }
 
