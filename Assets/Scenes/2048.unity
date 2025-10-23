@@ -3078,6 +3078,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   board: {fileID: 529974287}
   gameOver: {fileID: 364264847}
+  scoreText: {fileID: 1500011580}
+  hiscoreText: {fileID: 685660224}
 --- !u!1 &1520541391
 GameObject:
   m_ObjectHideFlags: 0
