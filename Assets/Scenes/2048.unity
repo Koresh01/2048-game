@@ -1847,7 +1847,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebea31b4b4491c346bc1f49aad821f21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adUnitId: demo-banner-yandex
+  adUnitId: R-M-17567212-1
 --- !u!1 &1067658247
 GameObject:
   m_ObjectHideFlags: 0
@@ -3984,7 +3984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fba0da4441f979f4a85c71e27f8a3915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adUnitId: demo-appopenad-yandex
+  adUnitId: R-M-17567212-2
 --- !u!1 &2009777502
 GameObject:
   m_ObjectHideFlags: 0

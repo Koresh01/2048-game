@@ -1,10 +1,10 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using YandexMobileAds;
 using YandexMobileAds.Base;
 
 /// <summary>
-/// Управляет загрузкой и показом рекламы при открытии приложения (App Open Ad) через Yandex Mobile Ads.
-/// Загружает рекламу при запуске, сразу показывает, а после закрытия освобождает ресурсы и загружает новую.
+/// РЈРїСЂР°РІР»СЏРµС‚ Р·Р°РіСЂСѓР·РєРѕР№ Рё РїРѕРєР°Р·РѕРј СЂРµРєР»Р°РјС‹ РїСЂРё РѕС‚РєСЂС‹С‚РёРё РїСЂРёР»РѕР¶РµРЅРёСЏ (App Open Ad) С‡РµСЂРµР· Yandex Mobile Ads.
+/// Р—Р°РіСЂСѓР¶Р°РµС‚ СЂРµРєР»Р°РјСѓ РїСЂРё Р·Р°РїСѓСЃРєРµ, СЃСЂР°Р·Сѓ РїРѕРєР°Р·С‹РІР°РµС‚, Р° РїРѕСЃР»Рµ Р·Р°РєСЂС‹С‚РёСЏ РѕСЃРІРѕР±РѕР¶РґР°РµС‚ СЂРµСЃСѓСЂСЃС‹ Рё Р·Р°РіСЂСѓР¶Р°РµС‚ РЅРѕРІСѓСЋ.
 /// </summary>
 public class YandexOpenedAd : MonoBehaviour
 {
@@ -17,14 +17,14 @@ public class YandexOpenedAd : MonoBehaviour
     {
         appOpenAdLoader = new AppOpenAdLoader();
 
-        // Подписка на событие успешной загрузки рекламы
+        // РџРѕРґРїРёСЃРєР° РЅР° СЃРѕР±С‹С‚РёРµ СѓСЃРїРµС€РЅРѕР№ Р·Р°РіСЂСѓР·РєРё СЂРµРєР»Р°РјС‹
         appOpenAdLoader.OnAdLoaded += (sender, args) =>
         {
             appOpenAd = args.AppOpenAd;
-            ShowAd();   // <------------ Вся фишка тут. Типо если реклама скачалась то сразу её показываем пользователю.
+            ShowAd();   // <------------ Р’СЃСЏ С„РёС€РєР° С‚СѓС‚. РўРёРїРѕ РµСЃР»Рё СЂРµРєР»Р°РјР° СЃРєР°С‡Р°Р»Р°СЃСЊ С‚Рѕ СЃСЂР°Р·Сѓ РµС‘ РїРѕРєР°Р·С‹РІР°РµРј РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ.
         };
 
-        // Подписка на событие неудачной загрузки
+        // РџРѕРґРїРёСЃРєР° РЅР° СЃРѕР±С‹С‚РёРµ РЅРµСѓРґР°С‡РЅРѕР№ Р·Р°РіСЂСѓР·РєРё
         appOpenAdLoader.OnAdFailedToLoad += (sender, args) =>
         {
             appOpenAd = null;
@@ -34,7 +34,7 @@ public class YandexOpenedAd : MonoBehaviour
         LoadAd();
     }
 
-    // Загружает рекламный баннер
+    // Р—Р°РіСЂСѓР¶Р°РµС‚ СЂРµРєР»Р°РјРЅС‹Р№ Р±Р°РЅРЅРµСЂ
     private void LoadAd()
     {
         if (appOpenAd != null)
@@ -47,7 +47,7 @@ public class YandexOpenedAd : MonoBehaviour
         appOpenAdLoader.LoadAd(request);
     }
 
-    // Показывает рекламу и подписывается на событие закрытия
+    // РџРѕРєР°Р·С‹РІР°РµС‚ СЂРµРєР»Р°РјСѓ Рё РїРѕРґРїРёСЃС‹РІР°РµС‚СЃСЏ РЅР° СЃРѕР±С‹С‚РёРµ Р·Р°РєСЂС‹С‚РёСЏ
     private void ShowAd()
     {
         if (appOpenAd != null)
@@ -56,7 +56,7 @@ public class YandexOpenedAd : MonoBehaviour
             {
                 appOpenAd.Destroy();
                 appOpenAd = null;
-                // LoadAd(); // Загружаем новую рекламу для следующего показа
+                // LoadAd(); // Р—Р°РіСЂСѓР¶Р°РµРј РЅРѕРІСѓСЋ СЂРµРєР»Р°РјСѓ РґР»СЏ СЃР»РµРґСѓСЋС‰РµРіРѕ РїРѕРєР°Р·Р°
             };
 
             appOpenAd.Show();
